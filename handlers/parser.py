@@ -36,7 +36,7 @@ class InternalParserHandler(base.BaseHandler):
                 self.error_log("get all links from DB", error, data)
                 status = False
 
-            if data:
+            if data and not error:
                 for item in data:
                     # check if link deleted from site
                     if item['link'] not in self.all_pages:

@@ -36,6 +36,7 @@ class APIService(tornado.web.Application):
         ]
 
         self.database = DB()
+        self.database.maybe_create_tables()
 
         super(APIService, self).__init__(app_handlers, **app_settings)
 

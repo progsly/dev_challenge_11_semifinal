@@ -4,7 +4,7 @@ import logging
 
 CONFIGURATION = {
     "debug": True,
-    "db_host": "localhost:3306",
+    "db_host": "mysql:3306",
     "db_user": "root",
     "db_password": "root",
     "db_name": "devchallenge_11_2",

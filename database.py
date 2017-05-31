@@ -4,10 +4,11 @@ import time
 import config
 import torndb
 
-from MySQLdb import MySQLError
+from MySQLdb import MySQLError, ProgrammingError
+import subprocess
 
 
-class DB():
+class DB(object):
 
     db = None
 
@@ -18,6 +19,28 @@ class DB():
             password=config.get('db_password'),
             database=config.get('db_name')
         )
+
+    def maybe_create_tables(self):
+        try:
+            error, data = self._get("SELECT COUNT(*) from articles")
+            if error:
+                _, _ = self._query("""
+                    CREATE TABLE IF NOT EXISTS `articles` (
+                    `id` int(11) NOT NULL AUTO_INCREMENT,
+                    `parent_id` int(11) NOT NULL DEFAULT '0',
+                    `title` text,
+                    `content` longtext,
+                    `status` tinyint(4) NOT NULL DEFAULT '0',
+                    `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    `link` varchar(255) NOT NULL,
+                    `hashsum` varchar(255) DEFAULT NULL,
+                    PRIMARY KEY (`id`)
+                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+                """)
+            return
+        except Exception:
+            return
 
     def get_article(self, article_id):
         return self._get(
