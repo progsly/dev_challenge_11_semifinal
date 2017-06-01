@@ -17,10 +17,6 @@ class InternalParserHandler(base.BaseHandler):
     def __init__(self, application, request, **kwargs):
         super(InternalParserHandler, self).__init__(application, request, **kwargs)
 
-    @property
-    def db(self):
-        return self.application.database
-
     def get(self):
         page_limit = self.get_query_param("page_limit", required=False, casttype=int)
         if page_limit is None:
@@ -104,7 +100,6 @@ class InternalParserHandler(base.BaseHandler):
             self.error_log("get_by_link", error, data)
             return False
 
-        title = title
         content = response.content
         content_hashsum = self.get_hashsum(content)
 

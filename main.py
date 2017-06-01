@@ -17,7 +17,7 @@ class APIService(tornado.web.Application):
     def __init__(self):
         debug = config.get('debug')
 
-        if debug is True:
+        if debug:
             logging.getLogger().setLevel(logging.DEBUG)
         else:
             logging.getLogger().setLevel(logging.ERROR)
@@ -32,7 +32,7 @@ class APIService(tornado.web.Application):
             (r'^/api/articles/updated/?$', handlers.articles.ArticlesUpdatedListHandler),
             (r'^/api/articles/updated/history/(\d*)/?$', handlers.articles.ArticlesUpdatedHistoryListHandler),
             (r'^/api/articles/deleted/?$', handlers.articles.ArticlesDeletedListHandler),
-            (r'^/api/articles/one/(\d*)/?$', handlers.articles.ArticleGetHandler),
+            (r'^/api/articles/one/(\d*)/?$', handlers.articles.ArticlesGetHandler),
         ]
 
         self.database = DB()

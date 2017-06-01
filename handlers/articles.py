@@ -7,16 +7,12 @@ class ArticlesListHandler(base.BaseHandler):
     def __init__(self, application, request, **kwargs):
         super(ArticlesListHandler, self).__init__(application, request, **kwargs)
 
-    @property
-    def db(self):
-        return self.application.database
-
     def get(self):
         paging = self.pre_pagination()
         error, data, paginator = self.db.get_articles(paging)
         if error:
             self.error_log("get articles from DB", error, data)
-            self.write_response({'error. See logs output.'}, 400)
+            self.write_response({'Error. See logs output.'}, 400)
 
         response = self.paginator(paginator, 'articles/', data)
 
@@ -29,16 +25,12 @@ class ArticlesUpdatedListHandler(base.BaseHandler):
     def __init__(self, application, request, **kwargs):
         super(ArticlesUpdatedListHandler, self).__init__(application, request, **kwargs)
 
-    @property
-    def db(self):
-        return self.application.database
-
     def get(self):
         paging = self.pre_pagination()
         error, data, paginator = self.db.get_articles(paging, status=1)
         if error:
             self.error_log("get articles from DB", error, data)
-            self.write_response({'error. See logs output.'}, 400)
+            self.write_response({'Error. See logs output.'}, 400)
 
         response = self.paginator(paginator, 'articles/updated/', data)
 
@@ -51,16 +43,12 @@ class ArticlesUpdatedHistoryListHandler(base.BaseHandler):
     def __init__(self, application, request, **kwargs):
         super(ArticlesUpdatedHistoryListHandler, self).__init__(application, request, **kwargs)
 
-    @property
-    def db(self):
-        return self.application.database
-
     def get(self, parent_id):
         paging = self.pre_pagination()
         error, data, paginator = self.db.get_articles(paging, parent_id=parent_id, status=0)
         if error:
             self.error_log("get articles from DB", error, data)
-            self.write_response({'error. See logs output.'}, 400)
+            self.write_response({'Error. See logs output.'}, 400)
 
         response = self.paginator(paginator, 'articles/updated/history/', data)
 
@@ -73,16 +61,12 @@ class ArticlesDeletedListHandler(base.BaseHandler):
     def __init__(self, application, request, **kwargs):
         super(ArticlesDeletedListHandler, self).__init__(application, request, **kwargs)
 
-    @property
-    def db(self):
-        return self.application.database
-
     def get(self):
         paging = self.pre_pagination()
         error, data, paginator = self.db.get_articles(paging, status=2)
         if error:
             self.error_log("get articles from DB", error, data)
-            self.write_response({'error. See logs output.'}, 400)
+            self.write_response({'Error. See logs output.'}, 400)
 
         response = self.paginator(paginator, 'articles/deleted/', data)
 
@@ -90,21 +74,17 @@ class ArticlesDeletedListHandler(base.BaseHandler):
         return
 
 
-class ArticleGetHandler(base.BaseHandler):
+class ArticlesGetHandler(base.BaseHandler):
 
     def __init__(self, application, request, **kwargs):
-        super(ArticleGetHandler, self).__init__(application, request, **kwargs)
-
-    @property
-    def db(self):
-        return self.application.database
+        super(ArticlesGetHandler, self).__init__(application, request, **kwargs)
 
     def get(self, article_id):
 
         error, data = self.db.get_article(article_id)
         if error:
             self.error_log("get article from DB", error, data)
-            self.write_response({'error. See logs output.'}, 400)
+            self.write_response({'Error. See logs output.'}, 400)
         response = self.convert_data(data)
 
         self.write_response(response, 200)
