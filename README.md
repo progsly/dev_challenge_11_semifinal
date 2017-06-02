@@ -1,6 +1,6 @@
 # Систему моніторингу за змінами у текстах новин
 
-[Завдання](back-endstandardsemi-finaltaskdevchallenge11.pdf)
+__[Завдання - PDF файл](back-endstandardsemi-finaltaskdevchallenge11.pdf)__
 
 _Стрічка новин `http://brovary-rada.gov.ua/documents/`_
 
