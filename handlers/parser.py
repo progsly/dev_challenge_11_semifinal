@@ -40,6 +40,7 @@ class InternalParserHandler(base.BaseHandler):
                         if error:
                             self.error_log("update_page", error, data)
                             status = False
+                            break
         else:
             status = False
 
@@ -71,6 +72,7 @@ class InternalParserHandler(base.BaseHandler):
                         break
                     else:
                         continue
+
                 if unicode(link.text) == u'»»':
                     next_group = link.attrs['href']
 

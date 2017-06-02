@@ -4,8 +4,7 @@ import time
 import config
 import torndb
 
-from MySQLdb import MySQLError, ProgrammingError
-import subprocess
+from MySQLdb import MySQLError
 
 
 class DB(object):
