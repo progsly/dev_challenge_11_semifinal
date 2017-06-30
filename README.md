@@ -1,19 +1,20 @@
-# Систему моніторингу за змінами у текстах новин
+# Monitoring system for changes in news texts
 
-__[Завдання - PDF файл](back-endstandardsemi-finaltaskdevchallenge11.pdf)__
+__[Task - PDF file ](back-endstandardsemi-finaltaskdevchallenge11.pdf)__ - Ukrainian language
 
-_Стрічка новин `http://brovary-rada.gov.ua/documents/`_
 
-Для старту додатка необхідно запустити команда: __`docker-compose up`__
+_News feed `http://brovary-rada.gov.ua/documents/`_
 
-Порти `8000` та `3306` повинні бути вільні.
+To start the application, you need to run the command: __`docker-compose up`__
 
-### Запуск парсера новин
+Ports `8000` and `3306` should be free..
+
+### Run news parser
 #### GET _http://0.0.0.0:8000/api/run_checker_
-Необов’язковий параметр __`page_limit`__ (int), кількість сторінок для сканування (починає з новіших новин).
-За замовчуваням сканує всі сторінки.
+Optional parameter __`page_limit`__ (int), number of pages to scan (starting with the newest news).
+By default, it scans all pages.
 
-##### Приклад
+##### Example
 
 * Request
 ```bash
@@ -36,18 +37,18 @@ HTTP/1.1 500
 ```
 
 
-### Отримати список новин
+### Get news list
 #### GET _http://0.0.0.0:8000/api/articles/_
-Необов’язкові параметри (для пагінації):
+Optional parameters (for pagination):
 
-* __`limit`__ (int), кількість новин у видачі (За замовчуваням = 20)
+* __`limit`__ (int), Number of news in response. (Default = 20)
 
-* __`after`__ (int), від якого елементу показувати наступні новини
+* __`after`__ (int), From which element to show next news
 
-* __`before`__ (int), до якого елементу показувати новини
+* __`before`__ (int), To what element to show news
 
 
-##### Приклад
+##### Example
 
 * Request
 ```bash
@@ -77,12 +78,12 @@ HTTP/1.1 200
           "content": "html content",
           "link": "http://brovary-rada.gov.ua/documents/27297.html",
           "id": 4
-        }, ...
+        }
     ]
 }
 ```
-Для переходу на наступну або попередню сторінку можна використовувати
-__`paging->previous`__ або __`paging->next`__
+To go to the next or previous page, you can use
+__`paging->previous`__ or __`paging->next`__
 
 * Error Response
 
@@ -91,26 +92,26 @@ HTTP/1.1 400
 {"status": "Error. See logs output."}
 ```
 
-### Отримати список змінених новин
+### Get a list of changed news
 #### GET _http://0.0.0.0:8000/api/articles/updated/_
 
-Ті ж самі параметри та відповідь як у __Отримати список новин__
+The same parameters and the response as __Get news list__
 
 
-### Отримати історію змін новини по ID новини
+### Get a history of news updates by ID
 #### GET _http://0.0.0.0:8000/api/articles/updated/history/:NEWS_ID_
 
-Ті ж самі параметри та відповідь як у __Отримати список новин__
+The same parameters and the response as __Get news list__
 
-### Отримати список видалених новини
+### Get deleted news list
 #### GET _http://0.0.0.0:8000/api/articles/deleted/_
 
-Ті ж самі параметри та відповідь як у __Отримати список новин__
+The same parameters and the response as __Get news list__
 
-### Отримати одну новину по ID
+### Get one news by ID
 #### GET _http://0.0.0.0:8000/api/articles/one/:NEWS_ID_
 
-##### Приклад
+##### Example
 
 * Request
 ```bash
@@ -141,16 +142,16 @@ HTTP/1.1 400
 {"status": "Error. See logs output."}
 ```
 
-### Технології
-* Для реалізації завдання був використан __Tornado Web Server__
+### Technologies
+* To implement the task has been used __Tornado Web Server__
 
-* База даних __MySQL__
+* Database __MySQL__
 
-* Прасинг `html` сторінок - Python бібліотека __Beautiful Soup__
+* Parsing `html` pages - Python lib __Beautiful Soup__
 
-Кожна збережена новина має 3 статуси (`no changes`, `updated`, `deleted`).
-При кожному наступному запуску парсера (`/api/run_checker`), порівнюються чексуми контенту,
-якщо є різниця - зберігається нова версія документу, а у батьківського змінюється статус на `updated`.
-При виявлені видаленого документу - статус збереженого змінюється на `deleted`.
+Each saved news has 3 statuses(`no changes`, `updated`, `deleted`).
+Each time you start the parser (`/api/run_checker`), compare checksum content,
+If there is a difference - a new version of the document is saved, and the parent changes the status to `updated`.
+When a deleted document is detected, the saved status changes to `deleted`.
 
-Функція парсингу рекурсивна, працює до поки не завантажить вказану кількість сторінок, а якщо цей параметр не вказан, поки не просканує всі новини.
+The parsing function is recursive, works until it loads the specified number of pages, and if this option is not specified, until it scans all the news.
